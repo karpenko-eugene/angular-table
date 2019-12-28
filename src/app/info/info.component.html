@@ -1,0 +1,25 @@
+<div *ngIf="dataService.dataLength === dataService.filteredData.length">
+  Showing
+  {{ (dataService.curPage - 1) * dataService.perPage + 1 }}
+  to
+  {{
+    dataService.curPage !== dataService.numPages
+      ? dataService.curPage * dataService.perPage
+      : dataService.dataLength
+  }}
+  of
+  {{ dataService.dataLength }} entries
+</div>
+<div *ngIf="dataService.dataLength !== dataService.filteredData.length">
+  Showing
+  {{ (dataService.curPage - 1) * dataService.perPage + 1 }}
+  to
+  {{
+    dataService.curPage !== dataService.numPages
+      ? dataService.curPage * dataService.perPage
+      : dataService.filteredData.length
+  }}
+  of
+  {{ dataService.filteredData.length }}
+  entries (filtered from {{ dataService.dataLength }} total entries)
+</div>

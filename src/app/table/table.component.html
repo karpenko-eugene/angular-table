@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let field of dataService.fields"
+        [class.sortAsc]="dataService.orderBy === field && dataService.orderDir === 1"
+        [class.sortDesc]="dataService.orderBy === field && dataService.orderDir === -1"
+        (click)="dataService.setOrder(field)"
+      >
+        {{ field }}
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of dataService.rows">
+      <td *ngFor="let item of row | keyvalue: originalOrder">
+        <span
+          contenteditable="true"
+          (blur)="dataService.updateValue($event, row, item.key)"
+          [innerHTML]="replaceText(item.value.toString())"
+        >
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</table>

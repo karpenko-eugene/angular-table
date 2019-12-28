@@ -1,0 +1,15 @@
+.app-container {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.app-header,
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 2px;
+}
+
+.app-upload {
+  padding: 10px 0;
+}

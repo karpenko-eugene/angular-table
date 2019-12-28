@@ -1,0 +1,85 @@
+<nav>
+  <ul>
+    <li>
+      <a
+        href="#"
+        *ngIf="dataService.curPage !== 1; else prev"
+        (click)="dataService.curPage = dataService.curPage - 1"
+      >
+        Previous
+      </a>
+      <ng-template #prev>
+        <span class="disabled">Previous</span>
+      </ng-template>
+    </li>
+
+    <ng-container *ngIf="dataService.numPages <= 6">
+      <li *ngFor="let n of pages">
+        <a href="#" *ngIf="dataService.curPage !== n" (click)="dataService.curPage = n">{{ n }}</a>
+        <span *ngIf="dataService.curPage === n" class="active">{{ n }}</span>
+      </li>
+    </ng-container>
+
+    <ng-container *ngIf="dataService.numPages > 6 && dataService.curPage <= 4">
+      <li *ngFor="let n of pages | slice: 0:5">
+        <a href="#" *ngIf="dataService.curPage !== n" (click)="dataService.curPage = n">{{ n }}</a>
+        <span *ngIf="dataService.curPage === n" class="active">{{ n }}</span>
+      </li>
+      <li>
+        <span class="disabled">...</span>
+      </li>
+    </ng-container>
+
+    <ng-container
+      *ngIf="dataService.numPages > 6 && dataService.curPage > dataService.numPages - 4"
+    >
+      <li>
+        <span class="disabled">...</span>
+      </li>
+      <li *ngFor="let n of pages | slice: -4">
+        <a href="#" *ngIf="dataService.curPage !== n" (click)="dataService.curPage = n">{{ n }}</a>
+        <span *ngIf="dataService.curPage === n" class="active">{{ n }}</span>
+      </li>
+    </ng-container>
+
+    <ng-container
+      *ngIf="
+        dataService.numPages > 6 &&
+        dataService.curPage > 4 &&
+        dataService.curPage <= dataService.numPages - 4
+      "
+    >
+      <li>
+        <a href="#" (click)="dataService.curPage = 1">1</a>
+      </li>
+      <li>
+        <span class="disabled">...</span>
+      </li>
+      <li *ngFor="let n of [dataService.curPage - 1, dataService.curPage, dataService.curPage + 1]">
+        <a href="#" *ngIf="dataService.curPage !== n" (click)="dataService.curPage = n">{{ n }}</a>
+        <span *ngIf="dataService.curPage === n" class="active">{{ n }}</span>
+      </li>
+      <li>
+        <span class="disabled">...</span>
+      </li>
+      <li>
+        <a href="#" (click)="dataService.curPage = dataService.numPages">{{
+          dataService.numPages
+        }}</a>
+      </li>
+    </ng-container>
+
+    <li>
+      <a
+        href="#"
+        *ngIf="dataService.curPage !== dataService.numPages; else next"
+        (click)="dataService.curPage = dataService.curPage + 1"
+      >
+        Next
+      </a>
+      <ng-template #next>
+        <span class="disabled">Next</span>
+      </ng-template>
+    </li>
+  </ul>
+</nav>
