@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../shared/data.service';
+import { Store } from '@ngrx/store';
+import { AppState, selectCounter } from '../store/table.reducer';
+import { Observable } from 'rxjs';
+import { decrement, getData, increment } from '../store/table.actions';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-table',
@@ -7,9 +12,17 @@ import { DataService } from '../shared/data.service';
   styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit {
-  constructor(private dataService: DataService) {}
+  count$: Observable<number>;
 
-  ngOnInit() {}
+  constructor(
+    private store: Store<AppState>,
+    private dataService: DataService,
+    private http: HttpClient,
+  ) {}
+
+  ngOnInit() {
+    this.count$ = this.store.select(selectCounter);
+  }
 
   originalOrder = () => 0;
 
@@ -21,5 +34,19 @@ export class TableComponent implements OnInit {
       );
     }
     return text;
+  }
+
+  inc(n: number): void {
+    this.store.dispatch(increment({ n }));
+  }
+
+  dec(n: number): void {
+    this.store.dispatch(decrement({ n }));
+  }
+
+  getData(): void {
+    this.http.get('https://jsonplaceholder.typicode.com/users').subscribe(json => {
+      this.store.dispatch(getData({ json }));
+    });
   }
 }
